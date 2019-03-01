@@ -7,16 +7,13 @@ from API_import_coef import API_import_coef
 from API_import_conso_commune import API_import_conso_commune
 from courbe_init import courbe_init
 
-#  ********************************** PARAMETRES ********************************** #
+#### PARAMETRES
 
 poste = 2154 #index du poste source dans le fichier GPS_poste_source
 nb_transfo = 3 #nombre de transformateurs du poste source
 date_debut = '2019-01-07'
 date_fin = '2019-01-13'
 saison = 'H' #H pour hiver, E pour été
-
-#Choix du scénario 
-scenario = 'scenario_1'
 
 #Répartition des profils de consommateurs
 #LA SOMME DES POIDS POUR CHAQUE CATEGORIE DOIT VALOIR 1
@@ -29,12 +26,12 @@ secteur_res = ['residentiel']
 secteur_pro = ['professionnel', 'agriculture', 'secteur_non_affecte']
 secteur_ent = ['industrie', 'tertiaire']
 
-#  **************************** COURBE DE CHARGE **************************** #
+#### COURBE DE CHARGE
 
 courbe_de_charge = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_res, secteur_pro, secteur_ent)
 
 
-# Graphe 
+#### GRAPHE
 
 fig = plt.figure()
 plt.plot(courbe_de_charge['horodate'], courbe_de_charge['P'])
