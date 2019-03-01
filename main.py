@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from API_import_coef import API_import_coef
 from API_import_conso_commune import API_import_conso_commune
 from courbe_init import courbe_init
+from courbe_ENR import courbe_sol #, courbe_eol
 
 #### PARAMETRES
 
@@ -26,15 +27,21 @@ secteur_res = ['residentiel']
 secteur_pro = ['professionnel', 'agriculture', 'secteur_non_affecte']
 secteur_ent = ['industrie', 'tertiaire']
 
+#Capacites renevoulables
+#estimables par poste source grace aux donnees S3REnR
+#https://www.rte-france.com/fr/article/les-schemas-regionaux-de-raccordement-au-reseau-des-energies-renouvelables-des-outils
+capa_sol = 5 #MW
+capa_eol = 10 #MW
+
 #### COURBE DE CHARGE
 
-courbe_de_charge = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_res, secteur_pro, secteur_ent)
-
+courbe_initiale = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_res, secteur_pro, secteur_ent)
+courbe_prod_sol = courbe_sol(date_debut,date_fin,capa_sol)
 
 #### GRAPHE
 
 fig = plt.figure()
-plt.plot(courbe_de_charge['horodate'], courbe_de_charge['P'])
+plt.plot(courbe_initiale['horodate'], courbe_initiale['P'])
 plt.xlabel('Date et heure')
 plt.ylabel('Puissance (MW)')
 plt.show()
