@@ -5,9 +5,9 @@ import json
 import matplotlib.pyplot as plt
 from API_import import API_import_coef, API_import_conso_commune
 from courbe_init import courbe_init
-from arg_input_VE import *
+from arg_input_VE import puissance_charge, trajets_quotidiens, dist_parcourue, horodate_list, seuil_recharge, taille_batterie, nombre_VE, ene_init
 from input_VE import input_VE
-from matrice_charge_VE import *
+from matrice_charge_VE import matrice_charge_VE
 
 #### PARAMETRES
 
