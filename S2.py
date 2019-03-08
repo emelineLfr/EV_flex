@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import math
 import scipy.stats as stats
+from dist_parcourue import dist_parcourue
+
 
 # Creation de la matrice des heures de debut de charge et des interdictions de charge imposees par le Scenario 2 (HP/HC)
 # En fonction du :
@@ -9,7 +11,7 @@ import scipy.stats as stats
 #     Taux de forfait base
 #     Matrice des temps : heures
 
-def S2(heures, nombre_VE_sort, nombre_VE_ent, taux_base):
+def S2(flux, heures, nombre_VE_sort, nombre_VE_ent, taux_bas, taux_pos):
 
 # MATRICES DES T DEBUTS
     # Initialisation
@@ -117,5 +119,10 @@ def S2(heures, nombre_VE_sort, nombre_VE_ent, taux_base):
     for i in range(len(index_inf_ent)):
         plage_ent.loc[index_inf_ent[i]:index_sup_ent[i], :] = 1
 
+    # MATRICES STANCES PARCOURUES
+    h_aller = '08:00:00'
+    h_retour = '18:00:00'
 
-    return T_debut_sort, T_debut_ent, plage_sort, plage_ent
+    dist_parc_sort, dist_parc_ent = dist_parcourue(flux, nombre_VE_sort, nombre_VE_ent, heures, h_aller, h_retour)
+
+    return T_debut_sort, T_debut_ent, plage_sort, plage_ent, dist_parc_sort, dist_parc_ent

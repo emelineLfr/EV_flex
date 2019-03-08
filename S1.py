@@ -2,14 +2,16 @@ import pandas as pd
 import numpy as np
 import math
 import scipy.stats as stats
+from dist_parcourue import dist_parcourue
 
 
 # Creation de la matrice des heures de debut de charge et des interdictions de charge imposees par le Scenario 1 (Recharge le soir)
 # En fonction du :
 #     Nombre de VE entrant/sortant [1]
 #     Matrice des temps : heures
+#     Matrice des distances parcourures
 
-def S1(heures, nombre_VE_sort, nombre_VE_ent):
+def S1(flux, heures, nombre_VE_sort, nombre_VE_ent, taux_bas, taux_pos):
     # MATRICES T DEBUTS
     # Initialisation
     T_debut_sort = pd.DataFrame(np.ones((len(heures), 1)))
@@ -81,4 +83,10 @@ def S1(heures, nombre_VE_sort, nombre_VE_ent):
     for i in range(len(index_inf_ent)):
         plage_ent.loc[index_inf_ent[i]:index_sup_ent[i], :] = 1
 
-    return T_debut_sort, T_debut_ent, plage_sort, plage_ent
+    # MATRICES STANCES PARCOURUES
+    h_aller = '08:00:00'
+    h_retour = '18:00:00'
+
+    dist_parc_sort, dist_parc_ent = dist_parcourue(flux, nombre_VE_sort, nombre_VE_ent, heures, h_aller, h_retour)
+
+    return T_debut_sort, T_debut_ent, plage_sort, plage_ent, dist_parc_sort, dist_parc_ent

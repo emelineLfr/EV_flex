@@ -99,6 +99,28 @@ def dist_domicile_travail(flux, nombre_VE_sort, nombre_VE_ent):
 
     return dist_parc_VE_sort, dist_parc_VE_ent
 
+def dist_parcourue(flux, nombre_VE_sort, nombre_VE_ent, heures, h_aller, h_retour):
+    # Donnees flux
+    flux_sortant_lisse = pd.DataFrame(flux['flux_sortant'])
+    flux_entrant_lisse = pd.DataFrame(flux['flux_entrant'])
+
+    #Distances parcourues par les VE
+    dist_aller_VE_sort = flux_sortant_lisse.sample(n=nombre_VE_sort)[0].tolist()
+    dist_aller_VE_ent = flux_entrant_lisse.sample(n=nombre_VE_ent)[0].tolist()
+
+    # Index des heures interdites
+    index_trajet = heures.index[heures.isin([h_aller, h_retour])]
+
+    #Creation des matrices de distances parcourues
+    dist_parc_sort = pd.DataFrame(np.zeros((len(heures), nombre_VE_sort)))
+    dist_parc_ent = pd.DataFrame(np.zeros((len(heures), nombre_VE_ent)))
+
+    dist_parc_sort.iloc[index_trajet,:] = dist_aller_VE_sort
+    dist_parc_ent.iloc[index_trajet,:] = dist_aller_VE_ent
+
+    return dist_parc_sort, dist_parc_ent
+
+
 
 # Création de la liste des heures de la plage de temps considérée
 # En fonction de :

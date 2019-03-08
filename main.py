@@ -58,4 +58,4 @@ courbe_de_charge = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro
 #plt.show()
 
 #### INPUT COURBE DES VE
-SOC_sort, SOC_ent, dist_parc_VE_sort, dist_parc_VE_ent, repart_taille_sort, repart_taille_ent, repart_taille_sort, repart_taille_ent, T_debut_sort, T_debut_ent, plage_sort, plage_ent = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario)
+inputVE = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario)

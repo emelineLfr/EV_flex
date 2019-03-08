@@ -1,12 +1,7 @@
-
-#SOC_sort, SOC_ent, dist_parc_VE_sort, dist_parc_VE_ent, repart_taille_sort, repart_taille_ent, repart_taille_sort, repart_taille_ent, T_debut_sort, T_debut_ent, plage_sort, plage_ent = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario)
-import numpy as np
-
-
+import numpy as np 
 
 #une petite fonction pour detecter si la batterie est à plus de 80% de sa charge, et mettre un coefficient adapté 
 #ici charge deux fois plus lentement si supérieur à 80%
-
 def sup80(vecteur, cd1, cd2, seuil ):
     l = len(vecteur)
     coeff = np.ones(l)
@@ -17,12 +12,7 @@ def sup80(vecteur, cd1, cd2, seuil ):
             coeff[i] = cd1
     return(coeff)
             
-    
-
-###################################################################################################
-###################################################################################################
-###################################################################################################
-
+            
 def matrice_charge_VE(trajet_parcouru,recharge_disponible,pourcent_min_batterie,taille_batterie,puissance_charge,heure_charge,conso_km = 0.1):
     nb_vehicules = np.shape(trajet_parcouru)[0]
     nb_pas_temps = np.shape(trajet_parcouru)[1]
@@ -36,10 +26,6 @@ def matrice_charge_VE(trajet_parcouru,recharge_disponible,pourcent_min_batterie,
     #matrice des charges
     en_charge = np.zeros((nb_vehicules,nb_pas_temps))
     
-    
-    ###################################################################################################
-    ###################################################################################################
-    ###################################################################################################
     #etat initial des batteries (lundi 0h00)
     vecteur_energie_debut = 10*np.random.randn(nb_vehicules) + 50
     for i in range (nb_vehicules) :
@@ -66,9 +52,6 @@ def matrice_charge_VE(trajet_parcouru,recharge_disponible,pourcent_min_batterie,
         coeff_vitesse_charge = sup80(energie_batterie[:,i-1],0.5,0.25,80)
         
     #     print('coeff_vitesse_charge : ',i, coeff_vitesse_charge)
-        
-        
-        
         
         #conversion des pourcentages en energie
         energie_batterie[:,i] = np.multiply(energie_batterie[:,i-1],

@@ -18,13 +18,8 @@ def input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min,
     repart_taille_sort, repart_taille_ent = taille_batterie(tailles, nombre_VE_sort, nombre_VE_ent) #repartition de la taille des batterie pour chaque individu
 
     # Débuts de charge et interdictions
-    if scenario == 1:
-        T_debut_sort, T_debut_ent, plage_sort, plage_ent = S1(heures, nombre_VE_sort, nombre_VE_ent)
-    elif scenario == 2:
-        T_debut_sort, T_debut_ent, plage_sort, plage_ent = S2(heures, nombre_VE_sort, nombre_VE_ent, taux_base)
-    elif scenario == 3:
-        T_debut_sort, T_debut_ent, plage_sort, plage_ent = S3(heures, nombre_VE_sort, nombre_VE_ent, taux_pos)
-
+    T_debut_sort, T_debut_ent, plage_sort, plage_ent, dist_parc_sort, dist_parc_ent = vars('S'+scenario)(flux, heures, nombre_VE_sort, nombre_VE_ent, taux_base, taux_pos)
+    
     return {'SOC_sort' : SOC_sort, 
             'SOC_ent' : SOC_ent, 
             'dist_parc_VE_sort' : dist_parc_VE_sort,
@@ -36,5 +31,7 @@ def input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min,
             'T_debut_sort' : T_debut_sort, 
             'T_debut_ent' : T_debut_ent, 
             'plage_sort' : plage_sort, 
-            'plage_ent' : plage_ent
+            'plage_ent' : plage_ent,
+            'dist_parc_sort' : dist_parc_sort, 
+            'dist_parc_ent' : dist_parc_ent
             }

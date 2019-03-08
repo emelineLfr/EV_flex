@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import math
 import scipy.stats as stats
+from dist_parcourue import dist_parcourue
+
 
 # Creation de la matrice des heures de debut de charge et des interdictions imposees par le Scenario 3 (Recharge travail)
 # En fonction du :
@@ -9,7 +11,7 @@ import scipy.stats as stats
 #     Taux de recharge travail possible
 #     Matrice des temps : heures
 
-def S3(heures, nombre_VE_sort, nombre_VE_ent, taux_pos):
+def S3(flux, heures, nombre_VE_sort, nombre_VE_ent, taux_bas, taux_pos):
 
 # MATRICES DES T DEBUTS
     # Initialisation
@@ -113,4 +115,10 @@ def S3(heures, nombre_VE_sort, nombre_VE_ent, taux_pos):
     for i in range(len(index_inf_ent)):
         plage_ent.loc[index_inf_ent[i]:index_sup_ent[i], :] = 1
 
-    return T_debut_sort, T_debut_ent, plage_sort, plage_ent
+    # MATRICES STANCES PARCOURUES
+    h_aller = '08:00:00'
+    h_retour = '18:00:00'
+
+    dist_parc_sort, dist_parc_ent = dist_parcourue(flux, nombre_VE_sort, nombre_VE_ent, heures, h_aller, h_retour)
+
+    return T_debut_sort, T_debut_ent, plage_sort, plage_ent, dist_parc_sort, dist_parc_ent
