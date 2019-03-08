@@ -1,10 +1,25 @@
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+import math
+
+# Création de 2 listes associant à chaque VE entrant/sortant une puissance de charge (supposée identique au domicile et au travail)
+# En fonction de :
+#     Matrice des puissances possibles et de leur répartition : puissances [[3,7,18],[0.45,0.45,0.1]] # kW,%
+#     Nombre de VE entrant et sortant : nombre_VE_sort, nombre_VE_ent [1]
+
+def puissance_charge(puissances,  nombre_VE_sort, nombre_VE_ent):
+    #Repartition de la puissance de charge
+    repart_puissances_sort = np.random.choice(puissances[0], nombre_VE_sort, p=puissances[1]).tolist()
+    repart_puissances_ent = np.random.choice(puissances[0], nombre_VE_ent, p=puissances[1]).tolist()
+
+
+    return repart_puissances_sort, repart_puissances_ent
+
+
 #Il s'agit ici de créer une liste contenant tous les trajets quotidiens individuels dans le périmètre du poste source.
 #Nous créons une liste contenant les flux entrant (qui inclut les flux entre communes raccordées au même poste), 
 #et une autre contenant les flux sortant
-
-import pandas as pd
-import numpy as np
-import scipy.stats as stats
 
 def trajets_quotidiens(poste):
     
@@ -85,4 +100,51 @@ def dist_domicile_travail(flux, nombre_VE_sort, nombre_VE_ent):
     return dist_parc_VE_sort, dist_parc_VE_ent
 
 
+# Création de la liste des heures de la plage de temps considérée
+# En fonction de :
+#     La courbe de charge
 
+def horodate_list(courbe_de_charge):
+    # Liste des heures
+    heures = courbe_de_charge['horodate'].str.extract('T([^+]*)')[0]
+    return heures
+
+
+# Creation de listes contenant le SOC des VE entrant et sortant
+# En fonction de :
+#     Bornes des SOC de charge initiale : SOC_min, SOC_max [%]
+#     Nombre de VE entrant et sortant : nombre_VE_sort, nombre_VE_en [1]
+
+def seuil_recharge(SOC_min, SOC_max, nombre_VE_sort, nombre_VE_ent):
+    SOC_sort = np.random.uniform(SOC_min, SOC_max, nombre_VE_sort).tolist()
+    SOC_ent = np.random.uniform(SOC_min, SOC_max, nombre_VE_ent).tolist()
+
+    return SOC_sort, SOC_ent
+
+# Création de 2 listes associant à chaque VE entrant/sortant une taille de batterie
+# En fonction de :
+#     Matrice des tailles possibles et de leur répartition : tailles[[40,18,33,70],[0.5,0.1,0.2,0.2]] # kWh,%
+#     Nombre de VE entrant et sortant : nombre_VE_sort, nombre_VE_ent [1]
+
+def taille_batterie(tailles,  nombre_VE_sort, nombre_VE_ent):
+    # Repartition des tailles des batteries
+    repart_taille_sort = np.random.choice(tailles[0], nombre_VE_sort, p=tailles[1]).tolist()
+    repart_taille_ent = np.random.choice(tailles[0], nombre_VE_ent, p=tailles[1]).tolist()
+
+    return repart_taille_sort, repart_taille_ent
+
+# Calcul des nombres de VE entrant/sortant
+# En fonction du :
+#     Taux de penetration des VE [%]
+
+def nombre_VE(penetration_VE, flux):
+    # Donnees flux
+    flux_sortant_lisse = flux['flux_sortant']
+    flux_entrant_lisse = flux['flux_entrant']
+
+    # Nombres de VE
+    nombre_VE_sort = math.floor(len(flux_sortant_lisse) * penetration_VE)  # sortant
+    nombre_VE_ent = math.floor(len(flux_entrant_lisse) * penetration_VE)  # entrant
+
+    return nombre_VE_sort, nombre_VE_ent
+    

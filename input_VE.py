@@ -1,10 +1,5 @@
 # Renvoie les arguments necessaires à la generation de la courbe de charge des VE
-from distance import trajets_quotidiens, dist_domicile_travail
-from horodate_list import horodate_list
-from nombre_VE import nombre_VE
-from seuil_recharge import seuil_recharge
-from puissance_charge import puissance_charge
-from taille_batterie import taille_batterie
+from arg_input_VE import trajets_quotidiens, dist_domicile_travail, horodate_list, nombre_VE, seuil_recharge, puissance_charge, taille_batterie
 from S1 import S1
 from S2 import S2
 from S3 import S3
@@ -30,4 +25,16 @@ def input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min,
     elif scenario == 3:
         T_debut_sort, T_debut_ent, plage_sort, plage_ent = S3(heures, nombre_VE_sort, nombre_VE_ent, taux_pos)
 
-    return SOC_sort, SOC_ent, dist_parc_VE_sort, dist_parc_VE_ent, repart_taille_sort, repart_taille_ent, repart_puissances_sort, repart_puissances_ent, T_debut_sort, T_debut_ent, plage_sort, plage_ent
+    return {'SOC_sort' : SOC_sort, 
+            'SOC_ent' : SOC_ent, 
+            'dist_parc_VE_sort' : dist_parc_VE_sort,
+            'dist_parc_VE_ent' : dist_parc_VE_ent, 
+            'repart_taille_sort' : repart_taille_sort, 
+            'repart_taille_ent' : repart_taille_ent, 
+            'repart_puissances_sort' : repart_puissances_sort, 
+            'repart_puissances_ent' : repart_puissances_ent, 
+            'T_debut_sort' : T_debut_sort, 
+            'T_debut_ent' : T_debut_ent, 
+            'plage_sort' : plage_sort, 
+            'plage_ent' : plage_ent
+            }

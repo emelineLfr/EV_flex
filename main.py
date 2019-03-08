@@ -3,26 +3,19 @@ import numpy as np
 import requests
 import json
 import matplotlib.pyplot as plt
-from API_import_coef import API_import_coef
-from API_import_conso_commune import API_import_conso_commune
+from API_import import API_import_coef, API_import_conso_commune
 from courbe_init import courbe_init
+from arg_input_VE import *
+from input_VE import input_VE
+from matrice_charge_VE import *
 
 #### PARAMETRES
 
+#POSTE SOURCE ET ECOSYSTEME
+
 poste = 2154 #index du poste source dans le fichier GPS_poste_source
 nb_transfo = 3 #nombre de transformateurs du poste source
-date_debut = '2019-01-07'
-date_fin = '2019-01-13'
 saison = 'H' #H pour hiver, E pour été
-
-# Flotte VE
-penetration = 0.1  # %
-SOC_min = 0.15 # %
-SOC_max = 0.9 # %
-tailles = [[40,18,33,70],[0.5,0.1,0.2,0.2]] # kWh / %
-puissances = [[3,7,18],[0.45,0.45,0.1]] # kW / %
-taux_base = 0.6 # %
-taux_pos = 0.4 # %
 
 #Répartition des profils de consommateurs
 #LA SOMME DES POIDS POUR CHAQUE CATEGORIE DOIT VALOIR 1
@@ -35,6 +28,22 @@ secteur_res = ['residentiel']
 secteur_pro = ['professionnel', 'agriculture', 'secteur_non_affecte']
 secteur_ent = ['industrie', 'tertiaire']
 
+#CHOIX DU SCENARIO 
+scenario = 1
+date_debut = '2019-01-07'
+date_fin = '2019-01-13'
+
+#PARAMETRES DE LA FLOTTE VE
+penetration = 0.1  # %taux de pénétration de véhicules électriques
+SOC_min, SOC_max = 0.15, 0.9 # la tolérance à la décharge des individus est un vecteur aléatoire entre SOC_min et max
+tailles = [[40,18,33,70],[0.5,0.1,0.2,0.2]] # kWh / % : Répartition des tailles de batteries au sein du parc de VE
+puissances = [[3,7,18],[0.45,0.45,0.1]] # kW / % : Répartition des puissances de charges (une Pch associée à chaque individu )
+taux_base = 0.6 # % : taux de personnes sur le forfait base (charge à domicile)
+taux_pos = 0.4 # % : Peuvent se recharger sur le lieu de travail 
+
+
+
+
 #### COURBE DE CHARGE
 
 courbe_de_charge = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_res, secteur_pro, secteur_ent)
@@ -42,11 +51,11 @@ courbe_de_charge = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro
 
 #### GRAPHE
 
-fig = plt.figure()
-plt.plot(courbe_de_charge['horodate'], courbe_de_charge['P'])
-plt.xlabel('Date et heure')
-plt.ylabel('Puissance (MW)')
-plt.show()
+#fig = plt.figure()
+#plt.plot(courbe_de_charge['horodate'], courbe_de_charge['P'])
+#plt.xlabel('Date et heure')
+#plt.ylabel('Puissance (MW)')
+#plt.show()
 
 #### INPUT COURBE DES VE
 SOC_sort, SOC_ent, dist_parc_VE_sort, dist_parc_VE_ent, repart_taille_sort, repart_taille_ent, repart_taille_sort, repart_taille_ent, T_debut_sort, T_debut_ent, plage_sort, plage_ent = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario)
