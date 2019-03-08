@@ -12,8 +12,8 @@ def sup80(vecteur, cd1, cd2, seuil ):
             coeff[i] = cd1
     return(coeff)
             
-            
-def matrice_charge_VE(trajet_parcouru,recharge_disponible,pourcent_min_batterie,taille_batterie,puissance_charge,heure_charge,conso_km = 0.1):
+
+def matrice_charge_VE(trajet_parcouru,recharge_disponible,pourcent_min_batterie,taille_batterie,puissance_charge,heure_charge,vecteur_energie_debut,conso_km = 0.1):
     nb_vehicules = np.shape(trajet_parcouru)[0]
     nb_pas_temps = np.shape(trajet_parcouru)[1]
     
@@ -26,14 +26,9 @@ def matrice_charge_VE(trajet_parcouru,recharge_disponible,pourcent_min_batterie,
     #matrice des charges
     en_charge = np.zeros((nb_vehicules,nb_pas_temps))
     
-    #etat initial des batteries (lundi 0h00)
-    vecteur_energie_debut = 10*np.random.randn(nb_vehicules) + 50
-    for i in range (nb_vehicules) :
-        if vecteur_energie_debut[i] >100 :
-            vecteur_energie_debut[i] = 100
     
     vecteur_energie_debut = np.transpose(vecteur_energie_debut)
-    #initialisation de la première colonne avec un vecteur gaussien 
+    #initialisation de la première colonne avec le vecteur energie debut
     energie_batterie[:,0] = vecteur_energie_debut
     #initialisation de la première colonne avec des charges aléatoires
     en_charge[:,0] = np.random.randint(2,size =(1,nb_vehicules))

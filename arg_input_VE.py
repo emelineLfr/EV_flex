@@ -170,3 +170,13 @@ def nombre_VE(penetration_VE, flux):
 
     return nombre_VE_sort, nombre_VE_ent
     
+# Creation de listes contenant le SOC initial des VE entrant et sortant
+# En fonction de :
+#     Bornes des SOC de charge initiale : SOC_min, SOC_max [%]
+#     Nombre de VE entrant et sortant : nombre_VE_sort, nombre_VE_en [1]
+
+def ene_init(SOC_min, SOC_max, nombre_VE_sort, nombre_VE_ent):
+    SOC_init_sort = np.random.uniform(SOC_min, SOC_max, nombre_VE_sort).tolist()
+    SOC_init_ent = np.random.uniform(SOC_min, SOC_max, nombre_VE_ent).tolist()
+
+    return SOC_init_sort, SOC_init_ent

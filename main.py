@@ -36,6 +36,7 @@ date_fin = '2019-01-13'
 #PARAMETRES DE LA FLOTTE VE
 penetration = 0.1  # %taux de pénétration de véhicules électriques
 SOC_min, SOC_max = 0.15, 0.9 # la tolérance à la décharge des individus est un vecteur aléatoire entre SOC_min et max
+SOC_init_min, SOC_init_max = 0, 1
 tailles = [[40,18,33,70],[0.5,0.1,0.2,0.2]] # kWh / % : Répartition des tailles de batteries au sein du parc de VE
 puissances = [[3,7,18],[0.45,0.45,0.1]] # kW / % : Répartition des puissances de charges (une Pch associée à chaque individu )
 taux_base = 0.6 # % : taux de personnes sur le forfait base (charge à domicile)
@@ -58,4 +59,7 @@ courbe_de_charge = courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro
 #plt.show()
 
 #### INPUT COURBE DES VE
-inputVE = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario)
+inputVE = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, SOC_init_min, SOC_init_max, taux_base, taux_pos, scenario)
+puissance_charge_VE = matrice_charge_VE(inputVE['dist_parc_VE_sort'],inputVE['plage_sort'],inputVE['SOC_sort'],inputVE['repart_taille_sort'],inputVE['repart_puissance_sort'],inputVE['T_debut_sort'],inputVE['SOC_init_sort'],0.1)
+
+
