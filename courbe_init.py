@@ -34,7 +34,7 @@ def courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_
 
     #chargement des coefficients
     for profil in profils: 
-        coef = API_import_coef(date_debut, date_fin, profil[0]) 
+        coef = API_import_coef(date_debut, date_fin, profil[0])
         if not coef.empty : 
             vars()['coef_'+profil[0]] = coef
         

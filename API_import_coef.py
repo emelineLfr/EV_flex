@@ -23,4 +23,5 @@ def API_import_coef(date_debut, date_fin, profil):
         coef = pd.DataFrame()
         coef['horodate']=horodate
         coef['coefficient_ajuste']=coefficient_ajuste
+        coef = coef.sort_values(by=['horodate'])
         return coef

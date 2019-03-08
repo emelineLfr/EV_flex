@@ -68,3 +68,21 @@ def trajets_quotidiens(poste):
 
 
 
+# Création de 2 listes associant à chaque VE entrant/sortant une distance domicile-travail
+# En fonction de :
+#     Indentifiant du poste source de départ/arrivée : poste (1 à 2234)
+#     Nombre de VE entrant et sortant : nombre_VE_sort, nombre_VE_ent [1]
+
+def dist_domicile_travail(flux, nombre_VE_sort, nombre_VE_ent):
+    # Donnees flux
+    flux_sortant_lisse = flux['flux_sortant']
+    flux_entrant_lisse = flux['flux_entrant']
+
+    #Distances parcourues par les VE
+    dist_parc_VE_sort = flux_sortant_lisse.sample(n=nombre_VE_sort)[0].tolist()
+    dist_parc_VE_ent = flux_entrant_lisse.sample(n=nombre_VE_ent)[0].tolist()
+
+    return dist_parc_VE_sort, dist_parc_VE_ent
+
+
+

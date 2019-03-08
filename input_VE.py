@@ -1,0 +1,33 @@
+# Renvoie les arguments necessaires à la generation de la courbe de charge des VE
+from distance import trajets_quotidiens, dist_domicile_travail
+from horodate_list import horodate_list
+from nombre_VE import nombre_VE
+from seuil_recharge import seuil_recharge
+from puissance_charge import puissance_charge
+from taille_batterie import taille_batterie
+from S1 import S1
+from S2 import S2
+from S3 import S3
+
+def input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario):
+    
+    # Dates et heures
+    heures = horodate_list(courbe_de_charge)
+
+    # Flotte de VE
+    flux = trajets_quotidiens(poste)
+    nombre_VE_sort, nombre_VE_ent = nombre_VE(penetration, flux) #nombre de VE (selon taux de pénétration)
+    SOC_sort, SOC_ent = seuil_recharge(SOC_min, SOC_max, nombre_VE_sort, nombre_VE_ent) #% recharge initiale batterie
+    dist_parc_VE_sort, dist_parc_VE_ent = dist_domicile_travail(flux, nombre_VE_sort, nombre_VE_ent) #liste des distances parcourues par chaque VE)
+    repart_puissances_sort, repart_puissances_ent = puissance_charge(puissances, nombre_VE_sort, nombre_VE_ent) #chaque individu se voit attribuer une puissance
+    repart_taille_sort, repart_taille_ent = taille_batterie(tailles, nombre_VE_sort, nombre_VE_ent) #repartition de la taille des batterie pour chaque individu
+
+    # Débuts de charge et interdictions
+    if scenario == 1:
+        T_debut_sort, T_debut_ent, plage_sort, plage_ent = S1(heures, nombre_VE_sort, nombre_VE_ent)
+    elif scenario == 2:
+        T_debut_sort, T_debut_ent, plage_sort, plage_ent = S2(heures, nombre_VE_sort, nombre_VE_ent, taux_base)
+    elif scenario == 3:
+        T_debut_sort, T_debut_ent, plage_sort, plage_ent = S3(heures, nombre_VE_sort, nombre_VE_ent, taux_pos)
+
+    return SOC_sort, SOC_ent, dist_parc_VE_sort, dist_parc_VE_ent, repart_taille_sort, repart_taille_ent, repart_puissances_sort, repart_puissances_ent, T_debut_sort, T_debut_ent, plage_sort, plage_ent

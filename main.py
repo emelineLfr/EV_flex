@@ -15,6 +15,15 @@ date_debut = '2019-01-07'
 date_fin = '2019-01-13'
 saison = 'H' #H pour hiver, E pour été
 
+# Flotte VE
+penetration = 0.1  # %
+SOC_min = 0.15 # %
+SOC_max = 0.9 # %
+tailles = [[40,18,33,70],[0.5,0.1,0.2,0.2]] # kWh / %
+puissances = [[3,7,18],[0.45,0.45,0.1]] # kW / %
+taux_base = 0.6 # %
+taux_pos = 0.4 # %
+
 #Répartition des profils de consommateurs
 #LA SOMME DES POIDS POUR CHAQUE CATEGORIE DOIT VALOIR 1
 res = [['RES1_BASE', 0.2], ['RES11_BASE',0.1],['RES2_HP', 0.45], ['RES2_HC', 0.25]]
@@ -38,3 +47,6 @@ plt.plot(courbe_de_charge['horodate'], courbe_de_charge['P'])
 plt.xlabel('Date et heure')
 plt.ylabel('Puissance (MW)')
 plt.show()
+
+#### INPUT COURBE DES VE
+SOC_sort, SOC_ent, dist_parc_VE_sort, dist_parc_VE_ent, repart_taille_sort, repart_taille_ent, repart_taille_sort, repart_taille_ent, T_debut_sort, T_debut_ent, plage_sort, plage_ent = input_VE(poste, courbe_de_charge, penetration, tailles, puissances, SOC_min, SOC_max, taux_base, taux_pos, scenario)
