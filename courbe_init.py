@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import requests
 import json
-from API_import_coef import API_import_coef
-from API_import_conso_commune import API_import_conso_commune
+from API_import import API_import_coef
+from API_import import API_import_conso_commune
 
 #Creation d'une courbe de charge estimee au niveau d'un transformateur d'un poste selectionne
 #En fonction des donnees annuelles de consommation electriques des communes rattachees
@@ -34,7 +34,7 @@ def courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_
 
     #chargement des coefficients
     for profil in profils: 
-        coef = API_import_coef(date_debut, date_fin, profil[0]) 
+        coef = API_import_coef(date_debut, date_fin, profil[0])
         if not coef.empty : 
             vars()['coef_'+profil[0]] = coef
         
