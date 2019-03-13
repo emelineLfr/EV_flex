@@ -14,7 +14,7 @@ def courbe_init(poste, nb_transfo, date_debut, date_fin, res, pro, ent, secteur_
     
     profils = res + pro + ent
     secteurs = secteur_ent + secteur_pro + secteur_res
-    nb_pas = 8760 #nb de pas horaires par an
+    nb_pas = 8760*2 #nb de pas demi-horaires par an (EL has changed - 12/03/2019)
 
     #### DONNEES ####
     #Selection des communes associees au poste source selectionne

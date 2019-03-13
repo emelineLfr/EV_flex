@@ -24,6 +24,7 @@ def API_import_coef(date_debut, date_fin, profil):
         coef['horodate']=horodate
         coef['coefficient_ajuste']=coefficient_ajuste
         coef = coef.sort_values(by=['horodate'])
+        coef.reset_index(drop=True, inplace=True)
         return coef
 
 # Fonction permettant d'importer les consommations electriques par secteur des communes en 2017
